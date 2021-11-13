@@ -8,7 +8,7 @@
 
 package controller;
 
-import br.edu.fateczl.ingridcosme.listaencadeadaint.ListaEncadeada;
+import br.edu.fateczl.ingridcosme.listaencadeadaint.ListaEncadeadaSimples;
 
 public class OpController {
 
@@ -16,16 +16,21 @@ public class OpController {
 		super();
 	}
 	
-	public boolean verificaOrdem(ListaEncadeada l) throws Exception {
+	public void insere(int numero, ListaEncadeadaSimples l) {
+		l.insertAtBack(numero);
+		System.out.println(l.toString());
+	}
+	
+	public boolean verificaOrdem(ListaEncadeadaSimples l) throws Exception {
 		boolean ordenado = true;
 		int posicao = l.size() - 1;
 		
-		while(!ordenado || posicao >= 1) {
-			int atual = l.pegaElemento(posicao);
-			int anterior = l.pegaElemento(posicao - 1);
+		while(posicao >= 1) {
+			int atual = l.getValue(posicao);
+			int anterior = l.getValue(posicao - 1);
 			
 			if(atual < anterior) {
-				ordenado = false;
+				return false;
 			}
 			posicao--;
 		}
@@ -33,14 +38,14 @@ public class OpController {
 		return ordenado;
 	}
 	
-	public boolean buscaIterativa(int numero, ListaEncadeada l) throws Exception {
+	public boolean buscaIterativa(int numero, ListaEncadeadaSimples l) throws Exception {
 		int inicio = 0;
 		int fim = l.size() - 1;
 		boolean achou = false;
 		
 		while(inicio <= fim && achou == false) {
 			int meio = (inicio + fim) / 2;
-			int elementoLista = l.pegaElemento(meio);
+			int elementoLista = l.getValue(meio);
 			
 			if(elementoLista == numero) {
 				achou = true;
@@ -56,26 +61,26 @@ public class OpController {
 		return achou;
 	}
 	
-	public boolean buscaRecursiva(int numero, ListaEncadeada l) throws Exception {
+	public boolean buscaRecursiva(int numero, ListaEncadeadaSimples l) throws Exception {
 		int tamanho = l.size();
 		
 		if(tamanho == 0) {
 			return false;
 		} else {
 			int meio = tamanho / 2;
-			if(l.pegaElemento(meio) == numero) {
+			if(l.getValue(meio) == numero) {
 				return true;
 			} else {
-				if(numero < l.pegaElemento(meio)) {
-					ListaEncadeada auxiliar = new ListaEncadeada();
+				if(numero < l.getValue(meio)) {
+					ListaEncadeadaSimples auxiliar = new ListaEncadeadaSimples();
 					for(int i = 0; i < meio; i++) {
-						auxiliar.insertAtFront(l.pegaElemento(i));
+						auxiliar.insertAtFront(l.getValue(i));
 					}
 					return buscaRecursiva(numero, auxiliar);
 				} else {
-					ListaEncadeada auxiliar = new ListaEncadeada();
+					ListaEncadeadaSimples auxiliar = new ListaEncadeadaSimples();
 					for(int i = meio; i < tamanho; i++) {
-						auxiliar.insertAtFront(l.pegaElemento(i));
+						auxiliar.insertAtFront(l.getValue(i));
 					}
 					return buscaRecursiva(numero, auxiliar);
 				}
